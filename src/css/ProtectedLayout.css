@@ -1,0 +1,19 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+
+.homeLayout {
+	display: flex;
+	flex-direction: row;
+}
+
+.mainLayout {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+	
+main {
+	padding: 10px;
+}
