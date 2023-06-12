@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'ApAutomation-frontend'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DB6F180F1B434E8B84F2848C1264E4AC }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A2956371AF954FB59B93A8153D64591F }}
           package: .
