@@ -63,4 +63,4 @@ jobs:
           app-name: 'ApAutomation-frontend'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_85AB66460BD24FF682C1F641EF5D595B }}
-          package: .
+          package: apAutomation_release.zip
