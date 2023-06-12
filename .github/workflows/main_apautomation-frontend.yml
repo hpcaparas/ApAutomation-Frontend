@@ -25,23 +25,13 @@ jobs:
         run: |
           npm install
           npm run build --if-present
-        env:
-         CI: false
-      
-      # Zip the build directory
-      - name: Zip Release
-        uses: TheDoctor0/zip-release@0.7.1
-        with:
-          # Filename for archive
-          filename: apAutomation_release.zip
-          # Base path for archive files
-          path: ./build/*
+          npm run test --if-present
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: apAutomation_release.zip
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
@@ -62,5 +52,5 @@ jobs:
         with:
           app-name: 'ApAutomation-frontend'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7487FBE7A456447EAE9C764CCA60EC90 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_85AB66460BD24FF682C1F641EF5D595B }}
           package: .
