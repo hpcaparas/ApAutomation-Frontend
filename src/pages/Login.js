@@ -1,19 +1,20 @@
-import * as React from 'react';
+import React, {useState, useEffect } from "react";
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Logo from '../images/AP_Logo.png'
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useAuth } from "../hooks/useAuth";
+//import { useAuth } from "../hooks/useAuth";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../slices/auth";
+import { clearMessage } from "../slices/message";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
 
 function Copyright(props) {
   return (
@@ -32,19 +33,107 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
+
+
 export default function Login() {
-    const { login } = useAuth();
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      login({
-        email: data.get('email'),
-        password: data.get('password'),
+  let navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { message } = useSelector((state) => state.message);
+  const paperStyle = { padding: 30, height: '80vh', width: 400, margin: "0 auto"}
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearMessage());
+  }, [dispatch]); 
+
+  const initialValues = {
+    username: "",
+    password: "",
+  };
+
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().required("This field is required!"),
+    password: Yup.string().required("This field is required!"),
+  });
+  const handleSubmit = (formValue) => {
+    const { username, password } = formValue;
+    setLoading(true);
+
+    dispatch(login({ username, password }))
+      .unwrap()
+      .then(() => {
+        navigate("/home");
+        window.location.reload();
+      })
+      .catch(() => {
+        setLoading(false);
       });
-    };
+  };
+
+  if (isLoggedIn) {
+    console.log(isLoggedIn);
+    //return <Navigate to="/home" />;
+  }
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <Container component="main" maxWidth="sm">
+      <CssBaseline />
+      <Paper elevation={3} style={paperStyle}>
+        <Grid align='center'>
+          <Avatar 
+            sx={{ width: 150, height: 150 }}
+            src="AP_Logo.png"/>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+        </Grid>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+          >
+          <Form>
+            <div className="mb-3">
+              <label htmlFor="username" className="form-label">Username</label >
+              <Field name="username" type="text" className="form-control" />
+              <ErrorMessage
+                name="username"
+                component="div"
+                className="alert alert-danger"
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label">Password</label>
+              <Field name="password" type="password" className="form-control" />
+              <ErrorMessage
+                name="password"
+                component="div"
+                className="alert alert-danger"
+              />
+            </div>
+
+            <div className="form-group">
+              <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
+                {loading && (
+                  <span className="spinner-border spinner-border-sm"></span>
+                )}
+                <span>Login</span>
+              </button>
+            </div>
+          </Form>
+        </Formik>
+        {message && (
+        <div className="form-group">
+          <div className="alert alert-danger" role="alert">
+            {message}
+          </div>
+        </div>
+        )}
+      </Paper>
+    </Container>
+    /*<ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -61,15 +150,16 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
@@ -106,9 +196,16 @@ export default function Login() {
                 </Link>
               </Grid>
             </Grid>
-          </Box>
+          </Box> 
         </Box>
       </Container>
-    </ThemeProvider>
+      {message && (
+        <div className="form-group">
+          <div className="alert alert-danger" role="alert">
+            {message}
+          </div>
+        </div>
+      )}
+    </ThemeProvider>*/
   );
 }

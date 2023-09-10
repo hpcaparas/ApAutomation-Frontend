@@ -1,10 +1,16 @@
-import { navData } from "../lib/NavData";
+import { navData } from "../common/NavData";
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import styles from "../css/SideNav.module.css";
 import { NavLink } from "react-router-dom";
 import React, {useState} from 'react';
+import styled from 'styled-components';
+import SubMenu from './SubMenu';
 
+
+const SidebarWrap = styled.div`
+  width: 100%;
+`;
 export default function Sidenav() {
     const [open, setopen] = useState(true)
 
@@ -16,11 +22,9 @@ export default function Sidenav() {
             <button className={styles.menuBtn} onClick={toggleOpen}>
                 {open? <KeyboardDoubleArrowLeftIcon />: <KeyboardDoubleArrowRightIcon />}
             </button>
-            {navData.map(item =>{
-                return <NavLink key={item.id} className={styles.sideitem} to={item.link}>
-                {item.icon}
-                <span className={styles.linkText}>{item.text}</span>
-            </NavLink>
+            
+            {navData.map((item, index) => {
+              return <SubMenu isOpen={open} item={item} key={index} className={styles.menuBtnClosed}/>;
             })}
         </div>
     )

@@ -1,228 +1,240 @@
-import * as React from "react";
-import { useState } from "react";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
-import Button from "@mui/material/Button";
-import Iconify from '../components/iconify';
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import FormControl from '@mui/material/FormControl';
+import { API_URL } from '../Constants'
+import NativeSelect from '@mui/material/NativeSelect';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import ListItemText from '@mui/material/ListItemText';
+import Select from '@mui/material/Select';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import {useSelector } from "react-redux";
 
 export const TransactionApp = () => {
-  const [type, setType] = React.useState("");
 
-  const handleChange = (event) => {
-    setType(event.target.value);
+  const { user: currentUser } = useSelector((state) => state.auth);
+
+  const deptOption = currentUser.dept.split(',');
+
+  const [reimbInfo, setReimbInfo] = useState({
+    reimb_id:null,
+    empName: currentUser.name,
+    username: currentUser.username,
+    store: "",
+    type: "",
+    priceWTax:"",
+    tax: "",
+    remarks:"",
+    department:""
+  });
+  const [file, setFile] = useState(null);
+
+  const formData = new FormData();
+
+  const {username, empName, store, type, priceWTax, tax, remarks, department} = reimbInfo;
+
+  const onInputChange = (e) => {
+    setReimbInfo({ ...reimbInfo, [e.target.name]: e.target.value });
   };
 
-  const categories = [
-    "science",
-    "sports",
-    "business",
-    "politics",
-    "entertainment",
-    "technology",
-    "world",
-    "all"
-  ];
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    console.log(reimbInfo)
+    for (let key in reimbInfo) {
+      formData.append(key, reimbInfo[key])
+    }
+    formData.append('file', file);
+    formData.append('filename', file.name);
+    
+    await axios.post(`${API_URL}api/transaction/reimb/save`, formData, {headers: {'Content-Type': 'multipart/form-data'}});
+    
+    setOpen(true);
+    //navigate("/adminCreateUser");
+  };
+
+  const [options, setOptions] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      // Fetch data
+      const { data } = await axios.get(`${API_URL}api/common/types`);
+      const results = []
+      // Store results in the results array
+      data.forEach((value) => {
+        results.push(value.typeId + " - " + value.typeName);
+      });
+      // Update the options state
+      setOptions(results)
+    }
+
+    // Trigger the fetch
+    fetchData();
+  }, []);
+
+  const getDeptList = async (id) => {
+    await axios.get(`${API_URL}departments`);
+  };
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <React.Fragment>
-      <Paper elevation={10} sx={{ marginRight: "15%", marginLeft: "15%" }}>
-        <Box sx={{ padding: 5 }}>
-          <Typography variant="h6" gutterBottom sx={{ paddingBottom: 5 }}>
-            Reimbursement Form
-          </Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={2}>
-              <InputLabel
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  fontWeight: 700
-                }}
-              >
+    <div className="container">
+      <div className="row">
+        <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
+          <h2 className="text-center m-4">Reimbursement Form</h2>
+
+          <form onSubmit={(e) => onSubmit(e)}>
+            <div className="mb-3">
+              <label htmlFor="Name" className="form-label">
                 Name
-              </InputLabel>
-            </Grid>
-            <Grid item xs={12} sm={10}>
-            <TextField
-              disabled
-              id="nameTxfield"
-              label="Henry Caparas"
-              size="small"
-            />
-            </Grid>
-            <Grid item xs={12} sm={2}>
-              <InputLabel
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  fontWeight: 700
-                }}
-              >
+              </label>
+              <input
+                type={"text"}
+                className="form-control"
+                name="empName"
+                value={empName}
+                disabled="true"
+                onChange={(e) => onInputChange(e)}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="Department" className="form-label">
                 Department
-              </InputLabel>
-            </Grid>
-            <Grid item xs={12} sm={10}>
-              <TextField
-                required
-                id="deptTextField"
-                name="dept"
-                label="Department"
-                fullWidth
-                size="small"
-                autoComplete="off"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item xs={12} sm={2}>
-              <InputLabel
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  fontWeight: 700
-                }}
-              >
-                Store
-              </InputLabel>
-            </Grid>
-            <Grid item xs={12} sm={10}>
-              <TextField
-                required
-                id="storeTextField"
-                name="store"
-                label="Store"
-                fullWidth
-                size="small"
-                autoComplete="off"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item xs={12} sm={2}>
-              <InputLabel
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  fontWeight: 700
-                }}
-              >
-                Type
-              </InputLabel>
-            </Grid>
-            <Grid item xs={12} sm={10}>
+              </label>
               <FormControl fullWidth size="small">
-                <InputLabel id="demo-simple-select-label">Select type</InputLabel>
                 <Select
-                  id="typeDdown"
-                  value={type}
-                  label="Type"
-                  onChange={handleChange}
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="department"
+                  value={department}
+                  label="Department"
+                  onChange={onInputChange}
                 >
-                  {categories.map((item) => (
+                   {deptOption.map((item) => (
                     <MenuItem value={item}>{item}</MenuItem>
                   ))}
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={2}>
-              <InputLabel
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  fontWeight: 700
-                }}
-              >
-                Price with Tax
-              </InputLabel>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                required
-                id="priceWTaxTextfield"
+            </div>
+            <div className="mb-3">
+              <label htmlFor="Store" className="form-label">
+                Source
+              </label>
+              <input
+                type={"text"}
+                className="form-control"
+                placeholder="Enter Source"
+                name="store"
+                value={store}
+                onChange={(e) => onInputChange(e)}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="Type" className="form-label">
+                Type
+              </label>
+              <FormControl fullWidth size="small">
+                <Select
+                  id="typeDdown"
+                  name="type"
+                  value={type}
+                  label="Type"
+                  onChange={(e) => onInputChange(e)}
+                >
+                  {options.map((item) => (
+                    <MenuItem value={item}>{item}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="priceWTax" className="form-label">
+                Price With Tax
+              </label>
+              <input
+                type={"number"}
+                className="form-control"
                 name="priceWTax"
-                label="Price with tax"
-                fullWidth
-                size="small"
-                autoComplete="off"
-                variant="outlined"
+                value={priceWTax}
+                onChange={(e) => onInputChange(e)}
               />
-            </Grid>
-            <Grid item xs={12} sm={2}>
-              <InputLabel
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  fontWeight: 700
-                }}
-              >
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="tax" className="form-label">
                 Tax
-              </InputLabel>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                required
-                id="taxTextfield"
+              </label>
+              <input
+                type={"number"}
+                className="form-control"
                 name="tax"
-                label="Tax"
-                fullWidth
-                size="small"
-                autoComplete="off"
-                variant="outlined"
+                value={tax}
+                onChange={(e) => onInputChange(e)}
               />
-            </Grid>
-            <Grid item xs={12} sm={2}>
-              <InputLabel
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  fontWeight: 700
-                }}
-              >
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="remarks" className="form-label">
                 Remarks
-              </InputLabel>
-            </Grid>
-            <Grid item xs={12} sm={10}>
-              <TextField
-                id="remarksTextarea"
-                label="Content"
-                multiline
-                fullWidth
-                rows={4}
+              </label>
+              <input
+                type={"text"}
+                className="form-control"
+                name="remarks"
+                value={remarks}
+                onChange={(e) => onInputChange(e)}
               />
-            </Grid>
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="file" className="form-label">
+                Upload Image
+              </label>
+              <input
+                type={"file"}
+                className="form-control"
+                onChange={(e) => setFile(e.target.files[0])} 
+              />
+            </div>
             
-            <Grid item xs={12} sm={2}>
-              <InputLabel
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  fontWeight: 700
-                }}
-              >
-                Img Upload
-              </InputLabel>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Button>
-                <UploadFileIcon />
-              </Button>
-            </Grid>
-            <Grid item xs={12} sm={6}/>
-            <Grid item xs={12} sm={5}/>
-            <Grid item xs={12} sm={4}>
-              <Button variant="contained" startIcon={<Iconify icon="ic:twotone-save" />}>
-                Save
-              </Button>
-            </Grid>
-            <Grid item xs={12} sm={5} />
-          </Grid>
-        </Box>
-      </Paper>
-    </React.Fragment>
+            <button type="submit" className="btn btn-outline-primary">
+              Submit
+            </button>
+
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Confirmation Dialog"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Your request has been successfully submitted.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose}>OK</Button>
+              </DialogActions>
+            </Dialog>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 }

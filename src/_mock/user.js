@@ -14,7 +14,7 @@ const users = [...Array(24)].map((_, index) => ({
     'Leader',
     'Hr Manager',
     'UI Designer',
-    'UX Designer',
+    'UX Designer', 
     'UI/UX Designer',
     'Project Manager',
     'Backend Developer',

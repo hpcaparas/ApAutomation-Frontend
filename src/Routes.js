@@ -3,9 +3,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { AdminCreateUser } from "./pages/AdminCreateUser";
 import { AdminMaint } from "./pages/AdminMaint";
-import { AdminPassReset } from "./pages/AdminPassReset";
 import { Approval } from "./pages/Approval";
-import { Login } from "./pages/Login";
 import { TransactionApp } from "./pages/TransactionApp";
 import { TransactionHis } from "./pages/TransactionHis";
 
@@ -17,7 +15,11 @@ const Routes = () => {
     if (loggedInUser) {
       setauthenticated(loggedInUser);
     }
-  }, []); */
+  }, []); 
+  
+  Note: This component is not being used. Refer to App.js for the Route config
+  
+  */
   return (
       <>
         <Routes>
@@ -27,7 +29,7 @@ const Routes = () => {
 						<Route path='/adminAddUser' element={<AdminAddUser/>}/>
 						<Route path='/adminEditUser/:id' element={<AdminEditUser/>}/>
 						<Route path='/adminMaint' element={<AdminMaint/>}/>
-						<Route path='/adminPassReset' element={<AdminPassReset/>}/>
+						{/* <Route path='/adminPassReset' element={<AdminChangePass/>}/> */}
 						<Route path='/approval' element={<Approval/>}/>
 						<Route path='/transactionApp' element={<TransactionApp/>}/>
 						<Route path='/transactionHis' element={<TransactionHis/>}/>
