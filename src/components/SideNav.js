@@ -6,17 +6,20 @@ import { NavLink } from "react-router-dom";
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import SubMenu from './SubMenu';
-
+import {useSelector } from "react-redux";
 
 const SidebarWrap = styled.div`
   width: 100%;
 `;
 export default function Sidenav() {
-    const [open, setopen] = useState(true)
+    const [open, setopen] = useState(true);
 
     const toggleOpen = () => {
         setopen(!open)
     }
+
+    const { user: currentUser } = useSelector((state) => state.auth);
+    const userRole = currentUser.roles[0];
     return (
         <div className={open?styles.sidenav:styles.sidenavClosed}>
             <button className={styles.menuBtn} onClick={toggleOpen}>
@@ -24,7 +27,7 @@ export default function Sidenav() {
             </button>
             
             {navData.map((item, index) => {
-              return <SubMenu isOpen={open} item={item} key={index} className={styles.menuBtnClosed}/>;
+              return <SubMenu userRole={userRole} isOpen={open} item={item} key={index} className={styles.menuBtnClosed}/>;
             })}
         </div>
     )

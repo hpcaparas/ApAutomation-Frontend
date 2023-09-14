@@ -15,7 +15,8 @@ export const navData = [
         id: 0,
         icon: <HomeIcon/>,
         text: "Home",
-        link: "home"
+        link: "home",
+        roles: "all"
     },
     {
         id: 11,
@@ -24,6 +25,7 @@ export const navData = [
         link: "#",
         iconClosed: <ArrowDropDownIcon />,
         iconOpened: <ArrowDropUpIcon />,
+        roles: "ROLE_ADMIN",
         subNav: [
             {
                 id: 1,
@@ -55,18 +57,21 @@ export const navData = [
         id: 4,
         icon: <ThumbUpIcon/>,
         text: "Approval",
-        link: "approval"
+        link: "approval",
+        roles: "ROLE_FINANCE"
     },
     {
         id: 5,
         icon: <AttachMoneyIcon/>,
         text: "Apply Reimbursement",
-        link: "transactionApp"
+        link: "transactionApp",
+        roles: "all"
     },
     {
         id: 6,
         icon: <HistoryIcon/>,
         text: "Transaction History",
-        link: "transactionHis"
+        link: "transactionHis",
+        roles: "all"
     },
 ]

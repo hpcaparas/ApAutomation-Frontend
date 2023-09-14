@@ -3,7 +3,15 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import styles from "../css/SideNav.module.css";
 
-const SidebarLink = styled(NavLink)`
+
+
+const SubMenu = ({ item, isOpen, userRole }) => {
+  const [subnav, setSubnav] = useState(false);
+
+  const showSubnav = () => setSubnav(!subnav);
+
+
+  const SidebarLink = styled(NavLink)`
   display: flex;
   color: #e1e9fc;
   justify-content: space-between;
@@ -19,6 +27,12 @@ const SidebarLink = styled(NavLink)`
     border-left: 4px solid #632ce4;
     cursor: pointer;
   }
+
+  display: ${props =>
+  props.role === 'all' ? 'flex' :
+  props.role === 'ROLE_ADMIN' && userRole === 'ROLE_ADMIN' ? 'flex' :
+  props.role === 'ROLE_FINANCE' && userRole === 'ROLE_FINANCE' ? 'flex' :
+  'none'}
 `;
 
 const SidebarLabel = styled.span`
@@ -40,14 +54,9 @@ const DropdownLink = styled(NavLink)`
     cursor: pointer;
   }
 `;
-
-const SubMenu = ({ item, isOpen }) => {
-  const [subnav, setSubnav] = useState(false);
-
-  const showSubnav = () => setSubnav(!subnav);
   return (
     <>
-      <SidebarLink to={item.link} onClick={item.subNav && showSubnav} className={isOpen?styles.menuBtnOpen:styles.menuBtnClosed}>
+      <SidebarLink role={item.roles} to={item.link} onClick={item.subNav && showSubnav} className={isOpen?styles.menuBtnOpen:styles.menuBtnClosed}>
         <div>
           {item.icon}
           <SidebarLabel>{item.text}</SidebarLabel>

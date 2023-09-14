@@ -91,7 +91,7 @@ export default function AdminCreateUser() {
                             className="btn btn-danger mx-2"
                             onClick={() => deleteUser(user.id)}
                         >
-                            Delete
+                            Deactivate
                         </button>
                       </td>
                   </tr>
