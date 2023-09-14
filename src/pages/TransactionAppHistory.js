@@ -14,10 +14,10 @@ const ODD_OPACITY = 0.2;
 
 const columns2 = [
     { field: 'id', hide: true},
-    { field: 'empName', headerName: 'Name', width: 170},
+    { field: 'empName', headerName: 'Submitted by', width: 170},
     { field: 'department', headerName: 'Department', width: 300},
     { field: 'statusDesc', headerName: 'Status', width: 170},
-    { field: 'store', headerName: 'Source', width: 170},
+    //{ field: 'store', headerName: 'Source', width: 170},
     { field: 'type', headerName: 'Type', width: 300},
     { field: 'priceWTax', headerName: 'Price with Tax', width: 170},
     { field: 'tax', headerName: 'Tax', width: 170},

@@ -129,7 +129,7 @@ export const TransactionApp = () => {
               </FormControl>
             </div>
             <div className="mb-3">
-              <label htmlFor="Store" className="form-label">
+              <label style={{display:"none"}} htmlFor="Store" className="form-label">
                 Source
               </label>
               <input
@@ -139,6 +139,7 @@ export const TransactionApp = () => {
                 name="store"
                 value={store}
                 onChange={(e) => onInputChange(e)}
+                style={{display:"none"}}
               />
             </div>
             <div className="mb-3">
