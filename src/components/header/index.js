@@ -46,16 +46,16 @@ Header.propTypes = {
 export default function Header({ onOpenNav }) {
   return (
       <StyledToolbar>
-        <IconButton
+         {/* <IconButton
           onClick={onOpenNav}
           sx={{
             mr: 1,
             color: 'text.primary',
             display: { lg: 'none' },
           }}
-        >
+        >  
           <Iconify icon="eva:menu-2-fill" />
-        </IconButton>
+        </IconButton>*/}
 
         <img src="ExpenseManagementLogoTop.png" alt="logo" style={{maxWidth: 300}} />
 

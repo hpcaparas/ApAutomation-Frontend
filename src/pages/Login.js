@@ -96,7 +96,7 @@ export default function Login() {
           <Form>
             <div className="mb-3">
               <label htmlFor="username" className="form-label">Username</label >
-              <Field name="username" type="text" className="form-control" />
+              <Field name="username" type="text" className="w-25" />
               <ErrorMessage
                 name="username"
                 component="div"
@@ -106,7 +106,7 @@ export default function Login() {
 
             <div className="mb-3">
               <label htmlFor="password" className="form-label">Password</label>
-              <Field name="password" type="password" className="form-control" />
+              <Field name="password" type="password" className="" />
               <ErrorMessage
                 name="password"
                 component="div"
@@ -131,6 +131,9 @@ export default function Login() {
           </div>
         </div>
         )}
+        <div className="form-group">
+          <label htmlFor="password" className="form-label">Password</label>
+          <Field name="password" type="password" className="w-25" /></div>
       </Paper>
     </Container>
     /*<ThemeProvider theme={defaultTheme}>

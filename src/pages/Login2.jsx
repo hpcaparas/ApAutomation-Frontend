@@ -70,8 +70,8 @@ export default function Login2() {
         <CssBaseline />
         <Grid
           item
-          xs={false}
-          sm={4}
+          xs={12}
+          sm={12}
           md={12}
           sx={{
             backgroundImage: 'url(../../Assets/ExpenseManagement_BGOnly.png)',
@@ -105,9 +105,9 @@ export default function Login2() {
               onSubmit={handleSubmit}
               >
               <Form>
-                <div className="mb-3" >
+                <div className="container" >
                   <label htmlFor="username" className="form-label" style={{ color: "#8da0f0"}}>Username</label >
-                  <Field name="username" type="text" className="form-control" style={{ width: "60vh"}}/>
+                  <Field name="username" type="text" className="form-control w-auto"/>
                   <ErrorMessage
                     name="username"
                     component="div"
@@ -115,9 +115,9 @@ export default function Login2() {
                   />
                 </div>
 
-                <div className="mb-3">
+                <div className="container">
                   <label htmlFor="password" className="form-label" style={{ color: "#8da0f0"}}>Password</label>
-                  <Field name="password" type="password" className="form-control" />
+                  <Field name="password" type="password" className="form-control w-auto" />
                   <ErrorMessage
                     name="password"
                     component="div"
@@ -125,8 +125,8 @@ export default function Login2() {
                   />
                 </div>
 
-                <div className="form-group">
-                  <button type="submit" className="btn btn-primary btn-block" disabled={loading} style={{ width: "60vh"}}>
+                <div className="container  pt-3 d-grid gap-2" >
+                  <button type="submit" className="btn btn-primary w-auto" disabled={loading} width="100vh">
                     {loading && (
                       <span className="spinner-border spinner-border-sm"></span>
                     )}

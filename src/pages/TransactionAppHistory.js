@@ -9,6 +9,10 @@ import {useSelector } from "react-redux";
 import { Button } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Lottie from 'lottie-react';
+import animationData from '../common/lottie-loading-money';
+import { Player } from '@lottiefiles/react-lottie-player';
+import lottie from "lottie-web";
 
 const ODD_OPACITY = 0.2;
 
@@ -96,11 +100,9 @@ const columns2 = [
   }
 
 export default function TransactionAppHistory() {
- 
-
   const [rows, setApproval] = useState([]);
   const [data2, setData] = useState([]);
-
+  const [dataLoaded, setDataLoaded] = useState(false);
   const { user: currentUser } = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -120,7 +122,8 @@ export default function TransactionAppHistory() {
       columns: columns2,
       initialState:{columns : {columnVisibilityModel : {id : false}}},
       rows: result.data
-    })
+    });
+    setDataLoaded(true);
   };
 
 
@@ -177,28 +180,36 @@ export default function TransactionAppHistory() {
     },
   }));
 
-  if (data2.length ===0) {
-    return <>Still loading...</>;
+  if (!dataLoaded) {
+    //return  <> <Lottie options={defaultOptions} height={400} width={400}/> </>;
+    return <Player src='https://lottie.host/d4cee601-b2e2-4407-bd20-dc500a066d6f/X8ZZmruWRZ.json' className="player" loop autoplay style={{ width: '400px' }}/>
+    /* lottie.loadAnimation({
+      container: document.querySelector("#loadingDiv"),
+      animationData: animationData,
+      autoplay:true
+    });*/
+    //return <div style={{ alignItems:'center', height: 400}} id="loadingDiv">loading</div>  
+    //return <>loading</>
   }
+  //setDataLoaded(true);
+    return (
 
-  return (
-
-    <div style={{ height: 400, width: '100%' }}>
-      <StripedDataGrid
-        {...data2}
-        //rows={[]}
-        // components={{
-        //   Toolbar: CustomToolbar,
-        // }}
-        getRowClassName={(params) =>
-          params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
-        }
-        slots={{
-          toolbar: CustomToolbar,
-          noRowsOverlay: CustomNoRowsOverlay,
-        }}
-      />
-    </div>
-  );
+     <div style={{ height: 400, width: '100%' }}>
+       <StripedDataGrid
+         {...data2}
+         //rows={[]}
+         // components={{
+         //   Toolbar: CustomToolbar,
+         // }}
+         getRowClassName={(params) =>
+           params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
+         }
+         slots={{
+           toolbar: CustomToolbar,
+           noRowsOverlay: CustomNoRowsOverlay,
+         }}
+       />
+     </div>
+   ); 
   
 }

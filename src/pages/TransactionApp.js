@@ -201,10 +201,11 @@ export const TransactionApp = () => {
             </div>
 
             <div className="mb-3">
-              <label htmlFor="file" className="form-label">
-                Upload Image
+              <label htmlFor="inputFile" className="form-label">
+                Choose/Capture Image
               </label>
               <input
+                id="inputFile"
                 type={"file"}
                 className="form-control"
                 onChange={(e) => setFile(e.target.files[0])} 

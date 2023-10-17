@@ -4,13 +4,9 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import styles from "../css/SideNav.module.css";
 import { NavLink } from "react-router-dom";
 import React, {useState} from 'react';
-import styled from 'styled-components';
 import SubMenu from './SubMenu';
 import {useSelector } from "react-redux";
 
-const SidebarWrap = styled.div`
-  width: 100%;
-`;
 export default function Sidenav() {
     const [open, setopen] = useState(true);
 

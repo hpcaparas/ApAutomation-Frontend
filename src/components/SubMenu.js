@@ -29,9 +29,10 @@ const SubMenu = ({ item, isOpen, userRole }) => {
   }
 
   display: ${props =>
-  props.role === 'all' ? 'flex' :
-  props.role === 'ROLE_ADMIN' && userRole === 'ROLE_ADMIN' ? 'flex' :
-  props.role === 'ROLE_FINANCE' && userRole === 'ROLE_FINANCE' ? 'flex' :
+  props.role.includes('all') ? 'flex' :
+  props.role.includes('ROLE_ADMIN') && userRole === 'ROLE_ADMIN' ? 'flex' :
+  props.role.includes('ROLE_FINANCE') && userRole === 'ROLE_FINANCE' ? 'flex' :
+  props.role.includes('ROLE_USER') && userRole === 'ROLE_USER' ? 'flex' :
   'none'}
 `;
 

@@ -65,13 +65,13 @@ export const navData = [
         icon: <AttachMoneyIcon/>,
         text: "Apply Reimbursement",
         link: "transactionApp",
-        roles: "all"
+        roles: "ROLE_USER, ROLE_FINANCE"
     },
     {
         id: 6,
         icon: <HistoryIcon/>,
         text: "Transaction History",
         link: "transactionHis",
-        roles: "all"
+        roles: "ROLE_USER, ROLE_FINANCE"
     },
 ]
