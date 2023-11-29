@@ -101,7 +101,8 @@ export const router = createBrowserRouter(
 				<Route path='transactionHis' element={<TransactionAppHistory/>}/>
 			</Route>
 		</Route>
-	),{ basename: "/ExpenseManagement" }
+	//),{ basename: "/ExpenseManagement" }
+	)
 );
 
 /* const App = () => {
