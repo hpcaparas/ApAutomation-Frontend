@@ -23,7 +23,7 @@ const Routes = () => {
   return (
       <>
         <Routes>
-						<Route path="/" element={<Navigate to="/Home" />} />
+						<Route path="/" element={<Navigate to="/Homessss" />} />
 						<Route path='/home' element={<Home/>} />
 						<Route path='/adminCreateUser' element={<AdminCreateUser/>}/>
 						<Route path='/adminAddUser' element={<AdminAddUser/>}/>

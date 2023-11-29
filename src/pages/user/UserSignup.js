@@ -1,28 +1,30 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { API_URL } from '../../Constants'
-import authHeader from "../../services/auth-header";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import FormControl from '@mui/material/FormControl';
+import { API_URL } from '../../Constants'
+import NativeSelect from '@mui/material/NativeSelect';
+import authHeader from "../../services/auth-header";
 import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
 import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 
-export default function EditUser() {
+export default function UserSignup() {
   let navigate = useNavigate();
 
-  const { id } = useParams();
- 
   const [user, setUser] = useState({
+    id:null,
     name: "",
     username: "",
+    password:"",
     email: "",
+    role:[],
     dept:[],
-    role:[]
+    secretKey:"",
   });
 
-  const { name, username, email, dept, role } = user;
+  const {name, username, email, dept, password, role, secretKey } = user;
 
   const onInputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -32,62 +34,28 @@ export default function EditUser() {
     setUser({ ...user, [e.target.name]: [e.target.value] });
   };
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    console.log(user)
+    //return;
+    await axios.post(`${API_URL}api/auth/signup`, user, { headers: authHeader() });
+    navigate("/admin/adminCreateUser");
+  };
+
   const [options, setOptions] = useState([]);
-
-  useEffect(() => {
-    loadUser();
-    async function fetchData() {
-      // Fetch data
-      const { data } = await axios.get(`${API_URL}api/common/departments`, { headers: authHeader() }); 
-      const results = []
-      // Store results in the results array
-      console.log(data)
-      data.forEach((value) => {
-        results.push({
-          key: value.id,
-          value: value.deptName
-        });
-      });
-      // Update the options state
-      setOptions(
-        results
-      )
-      console.log(options)
-    }
-
-    // Trigger the fetch
-    fetchData();
-  }, []);
 
   const userRoles = [
     {key:"", value:""},
     {key:"ROLE_ADMIN", value: "Administrator"}, 
-    {key:"ROLE_USER", value: "User"}
+    {key:"ROLE_USER", value: "User"},
+    {key:"ROLE_FINANCE", value: "Finance"}
   ];
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    console.log(user);
-    //return;
-    await axios.put(`${API_URL}api/admin/employee/${id}`, user, { headers: authHeader() });
-    navigate("/admin/adminCreateUser");
-  };
-
-  const loadUser = async () => {
-    const result = await axios.get(`${API_URL}api/admin/employee/${id}`, { headers: authHeader() });
-    const deptArr = result.data.dept.split(',')
-    result.data.dept = deptArr;
-    result.data.role = [result.data.roles[0].name];
-    console.log(result)
-    //result.data.password = "";
-    setUser(result.data);
-    //setUser({ ...user, role: [result.data.roles[0].name] });
-  };
   return (
     <div className="container">
       <div className="row">
         <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-          <h2 className="text-center m-4">Edit User</h2>
+          <h2 className="text-center m-4">Register User</h2>
 
           <form onSubmit={(e) => onSubmit(e)}>
             <div className="mb-3">
@@ -97,7 +65,7 @@ export default function EditUser() {
               <input
                 type={"text"}
                 className="form-control"
-                placeholder="Enter your name"
+                placeholder="Enter full name"
                 name="name"
                 value={name}
                 onChange={(e) => onInputChange(e)}
@@ -110,9 +78,36 @@ export default function EditUser() {
               <input
                 type={"text"}
                 className="form-control"
-                placeholder="Enter your username"
+                placeholder="Enter username"
                 name="username"
                 value={username}
+                onChange={(e) => onInputChange(e)}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="Password" className="form-label">
+                Initial Password
+              </label>
+              <input
+                type={"text"}
+                className="form-control"
+                placeholder="Enter initial password"
+                name="password"
+                value={password}
+                onChange={(e) => onInputChange(e)}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="secretKey" className="form-label">
+                Secret Key
+              </label>
+              <input
+                id="secretKey"
+                type={"text"}
+                className="form-control"
+                placeholder="Enter the secret key"
+                name="secretKey"
+                value={secretKey}
                 onChange={(e) => onInputChange(e)}
               />
             </div>
@@ -128,30 +123,6 @@ export default function EditUser() {
                 value={email}
                 onChange={(e) => onInputChange(e)}
               />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="Department" className="form-label">
-                Department
-              </label>
-              <FormControl fullWidth size="small">
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="dept"
-                  value={dept}
-                  label="Department"
-                  multiple
-                  onChange={onInputChange}
-                  renderValue={(selected) => selected.join(', ')}
-                >
-                  {options.map((option) => (
-                    <MenuItem key={option.key} value={option.value}>
-                      <Checkbox checked={dept.indexOf(option.value) > -1} />
-                      <ListItemText primary={option.value} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
             </div>
             <div className="mb-3">
               <label htmlFor="Role" className="form-label">

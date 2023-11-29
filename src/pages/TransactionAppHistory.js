@@ -9,10 +9,8 @@ import {useSelector } from "react-redux";
 import { Button } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Lottie from 'lottie-react';
-import animationData from '../common/lottie-loading-money';
 import { Player } from '@lottiefiles/react-lottie-player';
-import lottie from "lottie-web";
+import lottieMoney from '../images/lottie/lottie-loading-money.json'
 
 const ODD_OPACITY = 0.2;
 
@@ -137,7 +135,7 @@ export default function TransactionAppHistory() {
     return (
       <GridToolbarContainer>
         <GridToolbarExport />
-        <Button onClick={() => test()}>Test</Button>
+        <Button style={{visibility:"hidden"}} onClick={() => test()}>Test</Button>
       </GridToolbarContainer>
     );
   }
@@ -182,7 +180,7 @@ export default function TransactionAppHistory() {
 
   if (!dataLoaded) {
     //return  <> <Lottie options={defaultOptions} height={400} width={400}/> </>;
-    return <Player src='https://lottie.host/d4cee601-b2e2-4407-bd20-dc500a066d6f/X8ZZmruWRZ.json' className="player" loop autoplay style={{ width: '400px' }}/>
+    return <Player src={lottieMoney} className="player" loop autoplay style={{ width: '400px' }}/>
     /* lottie.loadAnimation({
       container: document.querySelector("#loadingDiv"),
       animationData: animationData,

@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { withRouter } from "./With-router";
 
 const parseJwt = (token) => {
   try {
-    return JSON.parse(atob(token.split(".")[1]));
+    return JSON.parse(atob(token.split('.')[1]));
   } catch (e) {
     return null;
   }
 };
 
 const AuthVerify = (props) => {
-  let location = useLocation();
+  let location = props.router.location;
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -22,9 +22,9 @@ const AuthVerify = (props) => {
         props.logOut();
       }
     }
-  }, [location, props]);
+  }, [location]);
 
   return <div></div>;
 };
 
-export default AuthVerify;
+export default withRouter(AuthVerify);

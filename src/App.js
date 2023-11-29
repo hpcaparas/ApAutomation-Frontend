@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, Component} from 'react';
  import {
 	Route,
 	createBrowserRouter,
@@ -27,6 +27,9 @@ import Login from './pages/Login2'
 import { AuthLayout } from "./components/AuthLayout";
 import { LoginLayout } from "./components/LoginLayout";
 import { ProtectedLayout } from "./components/ProtectedLayout";
+import eventBus from './common/EventBus';
+import authService from './services/auth-service';
+import RegisterUser from './pages/user/UserSignup';
 
 
 const getUserData = () =>
@@ -37,15 +40,46 @@ const getUserData = () =>
     }, 3000)
   ); 
   
+class App extends Component {
+	constructor(props) {
+		super(props);
+		this.logOut = this.logOut.bind(this);
+	
+		this.state = {
+		  showModeratorBoard: false,
+		  showAdminBoard: false,
+		  currentUser: undefined,
+		};
+	}
+
+	componentDidMount() {
+		eventBus.on("logout", () => {
+		  this.logOut();
+		});
+	}
+
+	componentWillUnmount() {
+		eventBus.remove("logout");
+	}
+
+	logOut() {
+		authService.logout();
+		this.setState({
+		  showModeratorBoard: false,
+		  showAdminBoard: false,
+		  currentUser: undefined,
+		});
+	}
+}
 
 export const router = createBrowserRouter(
 	createRoutesFromElements(
-		<Route
-			element={<AuthLayout />}
+		<Route element={<AuthLayout />}
 			loader={() => defer({ userPromise: getUserData() })}>
 			<Route element={<LoginLayout />}>
 				<Route path='/' element={<Login/>} />
 				<Route path='login' element={<Login/>} />
+				<Route path='admin/registerUser' element={<RegisterUser/>} />
 			</Route>
 			<Route element={<ProtectedLayout />}>
 				<Route path='admin/adminCreateUser' element={<AdminListUser/>}/>
@@ -56,18 +90,18 @@ export const router = createBrowserRouter(
 				<Route path='admin/adminEditPass/:id' element={<AdminEditPass/>}/>
 				<Route path='admin/listMaintType' element={<ListMaintType/>}/>
 				<Route path='admin/addMaintType' element={<AddMaintType/>}/>
-				<Route path='admin/editMaintType/:id' element={<EditMaintType/>}/>
+				<Route path='admin/editMaintType/:typeId' element={<EditMaintType/>}/>
 				<Route path='admin/listMaintDept' element={<ListMaintDept/>}/>
 				<Route path='admin/addMaintDept' element={<AddMaintDept/>}/>
 				<Route path='admin/editMaintDept/:id' element={<EditMaintDept/>}/>
-				<Route path='adminChangePass' element={<AdminChangePass/>}/>
+				<Route path='admin/adminChangePass' element={<AdminChangePass/>}/>
 				<Route path='approval' element={<Approval/>}/>
 				<Route path='approvalView/:id' element={<ApprovalView/>}/>
 				<Route path='transactionApp' element={<TransactionApp/>}/>
 				<Route path='transactionHis' element={<TransactionAppHistory/>}/>
 			</Route>
 		</Route>
-	)
+	),{ basename: "/ExpenseManagement" }
 );
 
 /* const App = () => {

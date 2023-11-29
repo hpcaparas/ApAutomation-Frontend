@@ -45,7 +45,7 @@ export default function AddUser() {
   useEffect(() => {
     async function fetchData() {
       // Fetch data
-      const { data } = await axios.get(`${API_URL}api/common/departments`);
+      const { data } = await axios.get(`${API_URL}api/common/departments`, { headers: authHeader() });
       const results = []
       // Store results in the results array
       data.forEach((value) => {

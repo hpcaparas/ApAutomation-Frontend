@@ -4,21 +4,13 @@ import { styled } from '@mui/material/styles';
 import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
 // utils
 import { bgBlur } from '../../utils/cssStyles';
-// components
-import Iconify from '../../components/iconify';
-//
-import Searchbar from './Searchbar';
 import AccountPopover from './AccountPopover';
-import LanguagePopover from './LanguagePopover';
-import NotificationsPopover from './NotificationsPopover';
-
+import ExpenseManagementLogoTop from '../../images/ExpenseManagementLogoTop.png'
+import ExpenseManagement_BGOnly_Img from '../../images/ExpenseManagement_BGOnly.png'
+import MobileBtn from './MobileBtn';
+import { NAV_WIDTH, HEADER_MOBILE, HEADER_DESKTOP} from '../../Constants'
+import Iconify from '../../components/iconify'; 
 // ----------------------------------------------------------------------
-
-const NAV_WIDTH = 280;
-
-const HEADER_MOBILE = 64;
-
-const HEADER_DESKTOP = 92;
 
 const StyledRoot = styled(AppBar)(({ theme }) => ({
   ...bgBlur({ color: theme.palette.background.paper }),
@@ -29,12 +21,14 @@ const StyledRoot = styled(AppBar)(({ theme }) => ({
 }));
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
+  overflow: 'hidden',
+  position: 'sticky',
   minHeight: HEADER_MOBILE,
+  backgroundImage: `url(${ExpenseManagement_BGOnly_Img})`,
   [theme.breakpoints.up('lg')]: {
     minHeight: HEADER_DESKTOP,
     padding: theme.spacing(0, 5),
-    backgroundImage: 'url(../../Assets/ExpenseManagement_BGOnly.png)'
-  },
+  }
 }));
 
 // ----------------------------------------------------------------------
@@ -46,31 +40,31 @@ Header.propTypes = {
 export default function Header({ onOpenNav }) {
   return (
       <StyledToolbar>
-         {/* <IconButton
+         <IconButton
           onClick={onOpenNav}
           sx={{
             mr: 1,
-            color: 'text.primary',
+            color: 'cyan',
             display: { lg: 'none' },
           }}
-        >  
+          >  
           <Iconify icon="eva:menu-2-fill" />
-        </IconButton>*/}
+          </IconButton>
+          {/* <MobileBtn/> */}
+          <img src={ExpenseManagementLogoTop} alt="logo" style={{maxWidth: '30%'}} />
 
-        <img src="ExpenseManagementLogoTop.png" alt="logo" style={{maxWidth: 300}} />
+          {/* <Searchbar /> */}
+          <Box sx={{ flexGrow: 1 }} />
 
-        {/* <Searchbar /> */}
-        <Box sx={{ flexGrow: 1 }} />
-
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={{
-            xs: 0.5,
-            sm: 1,
-          }}
-        >
-    {/*       <LanguagePopover />
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={{
+              xs: 0.5,
+              sm: 1,
+            }}
+          >
+        {/*       <LanguagePopover />
           <NotificationsPopover /> */}
           <AccountPopover />
         </Stack>

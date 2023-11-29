@@ -1,6 +1,8 @@
 body {
 	margin: 0;
 	padding: 0;
+	overflow-y: hidden;
+	overflow-x: hidden;
 }
 
 .homeLayout {
@@ -8,12 +10,35 @@ body {
 	flex-direction: row;
 }
 
+/* .header{
+	position: fixed;
+} */
+
+
+
 .mainLayout {
+	/* position:absolute; 
+	overflow-y: hidden;
+	overflow-x: hidden;  */
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	width: 100%;
+	top: 92px;
+  	bottom: 0;
+	flex-wrap: nowrap;
+	/* height: 50px; */
 }
-	
+/* 	
 main {
 	padding: 10px;
 }
+
+.content {
+	overflow-y: auto;
+	width: 100vh;
+	height:calc(100% - 108px);
+} 
+
+.sideNavLayout{
+	position: fixed;
+} */

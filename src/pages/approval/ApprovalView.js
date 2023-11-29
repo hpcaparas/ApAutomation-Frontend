@@ -40,7 +40,7 @@ export default function ApprovalView() {
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{overflowY: 'auto', height: '75vh', position:'relative', marginTop:'3%', marginBottom:"5%"}}>
       <div className="row">
         <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
           <h2 className="text-center m-4">Reimbursement Details</h2>

@@ -58,7 +58,7 @@ export const navData = [
         icon: <ThumbUpIcon/>,
         text: "Approval",
         link: "approval",
-        roles: "ROLE_FINANCE"
+        roles: "ROLE_ADMIN"
     },
     {
         id: 5,

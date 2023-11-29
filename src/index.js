@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 
  */
 import ThemeProvider from './theme';
-import './index.css';
+//import './index.css';
 
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
@@ -20,11 +20,11 @@ const container = document.getElementById("root");
 const root = createRoot(container);
 
 root.render(
-    <ThemeProvider>
+    // <ThemeProvider>
       <Provider store={store}>
           <RouterProvider router={router} />
       </Provider>
-    </ThemeProvider>
+    // </ThemeProvider>
 ); //serviceWorker.register();
 
 /* const root = ReactDOM.createRoot(document.getElementById('root'));

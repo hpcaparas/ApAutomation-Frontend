@@ -10,20 +10,51 @@ import {
 import Iconify from '../../components/iconify';
 import { API_URL } from '../../Constants'
 import authHeader from "../../services/auth-header";
-import {CustomTablePagination} from '../../common/TablePagination'
+import {CustomTablePagination} from '../../common/TablePagination';
+import {  useNavigate } from "react-router-dom";
+//import Modal from "../../common/Modal"
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+import {getUsers}  from "../../common/APIs";
 
-export default function AdminCreateUser() {
+function AdminCreateUser() {
     const [users, setUsers] = useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [openModal, setOpenModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
+
+    let navigate = useNavigate();
+
+    const [open, setOpen] = React.useState(false);
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   
     useEffect(() => {
       loadUsers();
     }, []);
   
     const loadUsers = async () => {
-      const result = await axios.get(`${API_URL}api/admin/employees`, { headers: authHeader() });
-      setUsers(result.data);
+      try {
+        const result = await axios.get(`${API_URL}api/admin/employees`, { headers: authHeader() });
+
+        setOpenModal(!openModal);
+        setUsers(result.data);
+      } catch (error) {
+        const err = error.response.data.error;
+        if(err === "Token Expired"){
+          setOpen(true);
+          console.error('Error:', err);
+          setModalMessage("Session expired. Use must login again.");
+        }
+        console.error('Error fetching employees:', error);
+      }
+      
     };
   
     const deleteUser = async (id) => {
@@ -40,6 +71,13 @@ export default function AdminCreateUser() {
     const handleChangeRowsPerPage = (event) => {
       setRowsPerPage(parseInt(event.target.value, 10));
       setPage(0);
+    };
+
+    const handleClose = () => {
+      setOpen(false);
+      localStorage.removeItem("user");
+      navigate("/login");
+      window.location.reload();
     };
 
   return (
@@ -127,6 +165,36 @@ export default function AdminCreateUser() {
               </table>
           </div>
       </Container>
+
+      <Dialog
+        fullScreen={fullScreen}
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="responsive-dialog-title">
+        <DialogTitle id="responsive-dialog-title">
+          {"WARNING"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {modalMessage}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose} className="btn btn-success mx-2">
+            Logout
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* <Modal isOpen={openModal} onClose={() => setOpenModal(false)}>
+        <Modal.Header>Warning</Modal.Header>
+        <Modal.Body><p>{modalMessage}</p></Modal.Body>
+        <Modal.Footer>
+          <Modal.DismissButton className="btn btn-primary">OK</Modal.DismissButton>
+        </Modal.Footer>
+      </Modal> */}
     </>
   )
 }
+
+export default AdminCreateUser;

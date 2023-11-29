@@ -9,13 +9,18 @@ export const AuthProvider = ({ children, userData }) => {
   const navigate = useNavigate();
 
   const login = async (data) => {
+    alert("Logging in...")
+    return;
     setUser(data);
     navigate("/home", { replace: true });
+    console.log("Logging in...")
+    alert("Logging in...")
   };
 
   const logout = () => {
     setUser(null);
     navigate("/", { replace: true });
+    console.log("Logging out...")
   };
 
   const value = useMemo(
@@ -26,7 +31,7 @@ export const AuthProvider = ({ children, userData }) => {
     }),
     [user]
   );
-    console.log(user);
+  console.log(user);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 

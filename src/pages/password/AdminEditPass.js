@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import authHeader from "../../services/auth-header";
 import { API_URL } from '../../Constants'
 
 export default function AdminEditPass() {
@@ -12,13 +13,20 @@ export default function AdminEditPass() {
     name: "",
     username: "",
     email: "",
-    password: "",
+    password: ""
   });
 
-  const { name, username, email, password } = user;
+  const [pwData, setPwData] = useState({
+    newPassword: "",
+    username: "",
+  });
+
+  const { name, username, email, password } = user; 
+
+  const { username2, newPassword } = user; 
 
   const onInputChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    setPwData({ ...user, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
@@ -27,12 +35,13 @@ export default function AdminEditPass() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.put(`http://localhost:8081/resetPass/employee/${id}`, user);
-    navigate("/adminChangePass");
+    pwData.username = user.username;
+    await axios.post(`${API_URL}api/admin/employee/resetPass/`, pwData, { headers: authHeader() });
+    navigate("/admin/adminChangePass");
   };
 
   const loadUser = async () => {
-    const result = await axios.get(`http://localhost:8081/employee/${id}`);
+    const result = await axios.get(`${API_URL}api/admin/employee/${id}`, { headers: authHeader() });
     setUser(result.data);
   };
 
@@ -83,15 +92,15 @@ export default function AdminEditPass() {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="Password" className="form-label">
-                Password
+              <label className="form-label">
+                Set new password
               </label>
               <input
                 type={"text"}
                 className="form-control"
                 placeholder="Enter new password"
-                name="password"
-                value={password}
+                name="newPassword"
+                value={newPassword}
                 onChange={(e) => onInputChange(e)}
               />
             </div>

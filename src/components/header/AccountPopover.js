@@ -9,6 +9,7 @@ import { logout } from "../../slices/auth";
 import { useDispatch, useSelector } from "react-redux";
 import EventBus from "../../common/EventBus";
 import { useNavigate } from "react-router-dom";
+import avatar from '../../images/avatar_default.jpg'
 
 // ----------------------------------------------------------------------
 
@@ -82,7 +83,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        <Avatar src={avatar} alt="photoURL" />
       </IconButton>
 
       <Popover

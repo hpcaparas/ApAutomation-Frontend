@@ -59,6 +59,7 @@ export default function ListMaintType() {
                   <tr>
                   <th scope="col">ID</th>
                   <th scope="col">Type Name</th>
+                  <th scope="col">Actions</th>
                   </tr>
               </thead>
               <tbody>

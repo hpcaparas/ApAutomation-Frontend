@@ -1,32 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Helmet } from 'react-helmet-async';
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+import authHeader from "../../services/auth-header";
 import {
     Stack,
     Button,
     Container,
     Typography,
   } from '@mui/material';
-  import Iconify from '../../components/iconify';
   import { API_URL } from '../../Constants'
 
 export default function AdminChangePass() {
     const [users, setUsers] = useState([]);
-    const { id } = useParams();
   
     useEffect(() => {
       loadUsers();
     }, []);
   
     const loadUsers = async () => {
-      const result = await axios.get(`${API_URL}employees`);
+      const result = await axios.get(`${API_URL}api/admin/employees`, { headers: authHeader() });
       setUsers(result.data);
-    };
-  
-    const deleteUser = async (id) => {
-      await axios.delete(`${API_URL}employee/${id}`);
-      loadUsers();
     };
 
   return (
@@ -58,7 +51,7 @@ export default function AdminChangePass() {
                       <td>
                         <Link
                             className="btn btn-outline-primary mx-2"
-                            to={`/adminEditPass/${user.id}`}
+                            to={`/admin/adminEditPass/${user.id}`}
                         >
                             Edit
                         </Link>

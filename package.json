@@ -15,6 +15,8 @@
     "re-start": "rm -rf build node_modules && yarn install && yarn start",
     "re-build": "rm -rf build node_modules && yarn install && yarn build"
   },
+  "homepage": "http:localhost:8080/ExpenseManagement",
+  "homepageeeee": "./",
   "eslintConfig": {
     "extends": [
       "react-app"
@@ -48,6 +50,7 @@
     "@mui/material": "^5.13.0",
     "@mui/x-data-grid": "^6.12.1",
     "@mui/x-data-grid-generator": "^6.12.1",
+    "@react-spring/web": "^9.7.3",
     "@reduxjs/toolkit": "^1.9.5",
     "@rpldy/mock-sender": "^1.4.1",
     "@rpldy/upload-button": "^1.4.1",
@@ -68,6 +71,7 @@
     "mobx-react": "^7.6.0",
     "numeral": "^2.0.6",
     "prop-types": "^15.8.1",
+    "qs-stringify": "^1.2.1",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",
     "react-dom": "^18.2.0",
@@ -107,5 +111,6 @@
   },
   "overrides": {
     "@svgr/webpack": "^6.5.0"
-  }
+  },
+  "proxyyyyy":"http://localhost:8080/ExpenseManagement"
 }

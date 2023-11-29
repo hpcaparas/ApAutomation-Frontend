@@ -44,10 +44,8 @@ export default function Approval() {
 
   const loadApprovals = async () => {
     let result = null;
-    if(role == "ROLE_FINANCE"){
-      result = await axios.get(`${API_URL}api/transaction/reimb/getApprovals`);
-      setApproval(result.data);
-    }
+    result = await axios.get(`${API_URL}api/transaction/reimb/getApprovals`);
+    setApproval(result.data);
   };
 
   const handleRemarksChange = (event) => {
