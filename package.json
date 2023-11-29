@@ -15,7 +15,7 @@
     "re-start": "rm -rf build node_modules && yarn install && yarn start",
     "re-build": "rm -rf build node_modules && yarn install && yarn build"
   },
-  "homepage": "http:localhost:8080/ExpenseManagement",
+  "homepage_disabledForAzure": "http:localhost:8080/ExpenseManagement",
   "homepageeeee": "./",
   "eslintConfig": {
     "extends": [
